@@ -1,32 +1,33 @@
-var fourSum = function(nums=[], target=0) {
-  let map = new Map
-  let array=[]
-  
-  for(let i=0;i<nums.length;i++){
-    map.set(nums[i],i)
-  }
+//optmize
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[][]}
+ */
+var fourSum = function(nums, target) {
+    nums.sort((a,b) => a-b)
+    let result = []
+    const map = new Map()
 
-  for(let i=0;i<nums.length-3;i++){
-    for(let j=i+1;j<nums.length-2;j++){
-      for(let x=j+1;x<nums.length-1;x++){
-        const find = target - (nums[i]+nums[j]+nums[x])
-        if(map.has(find) && map.get(find)!==i && map.get(find)!==j && map.get(find) !== x) array.push([nums[i],nums[j],nums[x],nums[map.get(find)]])
-      }
+    for(let i=0;i<nums.length;i++){
+        for(let j=i+1;j<nums.length;j++){
+            let x=j+1
+            let y=nums.length-1
+
+            while(x<y){
+                if((nums[i] + nums[j] + nums[x] + nums[y])===target && !map.has(`${nums[i]}${nums[j]}${nums[x]}${nums[y]}`)){
+                    result.push([nums[i],nums[j],nums[x],nums[y]])
+                    map.set(`${nums[i]}${nums[j]}${nums[x]}${nums[y]}`,1)
+                }
+
+                if((nums[i] + nums[j] + nums[x] + nums[y])<target){
+                    x++
+                }else{
+                    y--
+                }
+
+            }
+        }
     }
-  }
-  
-  return array
-    
+    return result
 };
-
-
-let nums = [1,0,-1,0,-2,2], target = 0
-
-console.time("time")
-
-
-console.log(fourSum(nums,target));
-
-console.timeEnd("time")
-
-
